@@ -68,7 +68,7 @@ function buildGraphData(quints: Quintuple[]) {
 }
 
 function renderGraph(quints: Quintuple[]) {
-  if (!svgRef.value || quints.length === 0)
+  if (!svgRef.value)
     return
 
   // Clean up previous
@@ -242,7 +242,7 @@ onUnmounted(() => {
   <BoxContainer>
     <div class="text-white flex flex-col h-full">
       <!-- Header -->
-      <div class="flex items-center gap-3 mb-3 shrink-0">
+      <div class="flex items-center h-8 gap-4 mb-4 shrink-0">
         <h2 class="text-lg font-bold">
           记忆云海
         </h2>
@@ -292,7 +292,7 @@ onUnmounted(() => {
             请先进行对话以生成知识图谱，或前往「记忆链接」启用 GRAG
           </p>
         </div>
-        <svg ref="svgRef" class="w-full h-full" />
+        <svg ref="svgRef" class="w-full h-full select-none" />
       </div>
 
       <!-- Legend -->

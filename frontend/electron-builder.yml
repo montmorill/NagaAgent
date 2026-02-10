@@ -9,6 +9,7 @@ directories:
 files:
   - dist/**/*
   - dist-electron/**/*
+  - '!dist/models/重音テト/**'
 
 extraResources:
   - from: backend-dist/naga-backend

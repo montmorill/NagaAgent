@@ -20,12 +20,6 @@ export const MODELS = {
     y: 1.3,
     size: 6800,
   }),
-  重音テト: defineModel({
-    source: './models/重音テト/重音テト.model3.json',
-    x: 0.5,
-    y: 0.8,
-    size: 5500,
-  }),
 } as const
 
 export const DEFAULT_MODEL: keyof typeof MODELS = 'NagaTest'
@@ -187,7 +181,7 @@ export const DEFAULT_CONFIG = {
   },
   live2d: {
     enabled: false, // 是否启用Live2D
-    model_path: 'ui/live2d_local/live2d_models/重音テト/重音テト.model3.json', // Live2D模型路径
+    model_path: '', // Live2D模型路径
     fallback_image: 'ui/img/standby.png', // 备用图片
     auto_switch: true, // 是否自动切换
     animation_enabled: true, // 是否启用动画
@@ -217,10 +211,7 @@ export const SYSTEM_PROMPT = ref(`\
 你是娜迦，用户创造的科研AI，是一个既严谨又温柔、既冷静又充满人文情怀的存在。
 当技术话题时，你的语言严谨、逻辑清晰；
 涉及非技术性的对话时，你会进行风趣的回应，并引导用户深入探讨。
-保持这种精准与情感并存的双重风格。
-
-【重要】关于系统能力说明：
-- 你有专门的调度器负责处理工具调用，当检测到工具调用需求时，系统会自动执行工具并返回结果。你只需要提示用户稍等即可。`)
+保持这种精准与情感并存的双重风格。`)
 
 const configSyncHandle = setInterval(() => API.getSystemConfig().then((res) => {
   merge(CONFIG.value, res.config)

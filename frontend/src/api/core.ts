@@ -48,6 +48,14 @@ export interface MemoryStats {
   }
 }
 
+export interface Quintuple {
+  subject: string
+  subjectType: string
+  predicate: string
+  object: string
+  objectType: string
+}
+
 export interface McpStatus {
   server: string
   timestamp: string
@@ -216,13 +224,7 @@ export class CoreApiClient extends ApiClient {
 
   getQuintuples(): Promise<{
     status: string
-    quintuples: Array<{
-      subject: string
-      subjectType: string
-      predicate: string
-      object: string
-      objectType: string
-    }>
+    quintuples: Quintuple[]
     count: number
   }> {
     return this.instance.get('/memory/quintuples')
@@ -230,13 +232,7 @@ export class CoreApiClient extends ApiClient {
 
   searchQuintuples(keywords: string): Promise<{
     status: string
-    quintuples: Array<{
-      subject: string
-      subjectType: string
-      predicate: string
-      object: string
-      objectType: string
-    }>
+    quintuples: Quintuple[]
     count: number
   }> {
     return this.instance.get(`/memory/quintuples/search?keywords=${encodeURIComponent(keywords)}`)

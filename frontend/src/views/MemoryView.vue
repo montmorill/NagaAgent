@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { MemoryStats } from '@/api/core'
 import { useStorage } from '@vueuse/core'
-import { Accordion, Button, Divider, InputNumber, InputText, Message, ToggleSwitch } from 'primevue'
+import { Accordion, Button, InputNumber, InputText, Message, ToggleSwitch } from 'primevue'
 import { computed, onMounted, ref } from 'vue'
 import API from '@/api/core'
 import BoxContainer from '@/components/BoxContainer.vue'
@@ -60,6 +60,20 @@ onMounted(() => {
 
 <template>
   <BoxContainer class="text-sm">
+    <div class="flex flex-row-reverse justify-between gap-4 mb-4">
+      <Button
+        :label="testResult ? '测试连接' : '测试中...' "
+        size="small"
+        :disabled="!testResult"
+        @click="testConnection"
+      />
+      <Message
+        v-if="testResult" :pt="{ content: { class: 'p-2!' } }"
+        :severity="testResult.severity"
+      >
+        {{ testResult.message }}
+      </Message>
+    </div>
     <Accordion :value="accordionValue" class="pb-8" multiple>
       <ConfigGroup value="grag">
         <template #header>
@@ -73,7 +87,7 @@ onMounted(() => {
         </template>
         <div class="grid gap-4">
           <ConfigItem name="自动提取" description="自动从对话中提取五元组知识">
-            <ToggleSwitch v-model="CONFIG.grag.auto_extract" />
+            <ToggleSwitch v-model="CONFIG.grag.auto_extract" class="self-end" />
           </ConfigItem>
           <ConfigItem name="上下文长度" description="最近对话窗口大小">
             <InputNumber v-model="CONFIG.grag.context_length" :min="1" :max="20" show-buttons />
@@ -94,21 +108,6 @@ onMounted(() => {
           <ConfigItem name="密码" description="Neo4j 数据库密码">
             <InputText v-model="CONFIG.grag.neo4j_password" placeholder="••••••••" />
           </ConfigItem>
-          <Divider class="m-1!" />
-          <div class="flex flex-row-reverse justify-between gap-4">
-            <Button
-              :label="testResult ? '测试连接' : '测试中...' "
-              size="small"
-              :disabled="!testResult"
-              @click="testConnection"
-            />
-            <Message
-              v-if="testResult" :pt="{ content: { class: 'p-2.5!' } }"
-              :severity="testResult.severity"
-            >
-              {{ testResult.message }}
-            </Message>
-          </div>
         </div>
       </ConfigGroup>
     </Accordion>

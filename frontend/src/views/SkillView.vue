@@ -6,13 +6,12 @@ import API from '@/api/core'
 import BoxContainer from '@/components/BoxContainer.vue'
 
 interface Skill extends MarketItem {
-  installFailed?: boolean
+  installing?: boolean
 }
 
 const skills = ref<Skill[]>([])
 const mcpStatus = ref<McpStatus>()
-const mcpError = ref('')
-const installing = ref<string>()
+const mcpError = ref<string>()
 
 API.getMarketItems().then((res) => {
   skills.value = res.items ?? []
@@ -20,12 +19,12 @@ API.getMarketItems().then((res) => {
 
 API.getMcpStatus().then((res) => {
   mcpStatus.value = res
-}).catch((e: any) => {
-  mcpError.value = e.message || 'MCP 不可达'
+}).catch((error: any) => {
+  mcpError.value = error.message || 'MCP 不可达'
 })
 
-async function installItem(item: MarketItem) {
-  installing.value = item.id
+async function installItem(item: Skill) {
+  item.installing = true
   try {
     await API.installMarketItem(item.id)
     item.installed = true
@@ -34,7 +33,7 @@ async function installItem(item: MarketItem) {
     alert(`安装失败: ${error.message}`)
   }
   finally {
-    installing.value = undefined
+    delete item.installing
   }
 }
 </script>
@@ -91,7 +90,7 @@ async function installItem(item: MarketItem) {
                 <div>
                   <span v-if="option.installed" class="text-green-400 text-xs font-bold">已安装</span>
                   <button
-                    v-else-if="installing === option.id"
+                    v-else-if="option.installing"
                     class="px-2 py-1 bg-white/10 rounded text-xs op-50 cursor-wait"
                     disabled
                   >
